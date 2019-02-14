@@ -18,7 +18,7 @@ body {
 
 body {
   color: #111;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Retro-computer-personal-use, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 147%;
 }
@@ -87,7 +87,10 @@ p {
 }
 
 /* ---- section ---- */
-
+#space-invader-logo{
+  width: 100%;
+  height: 100%;
+}
 section.testimonials {
   // ...
 }

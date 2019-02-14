@@ -1,49 +1,49 @@
 'use strict';
 const main=() => {
-    /*
+
     const buildDom = (html) => {
-      
-        const main =document.querySelector('main');
-        main.innerHTML = html;
-        return main;
-
+        const main = document.querySelector('main');
+        main.innerHTML= html;
     };
-    const buildSplashScreen = () => {
-       const splashScreen = buildDom(`
-       <section class="splash-screen">
-       <h1>Eternal enemies</h1>
-       <button>Start</button>
-       </section>
-       
-       `);
+   
+    const buildSplashScreen =() =>{
+        const splashScreen =  buildDom(`
+            <section class="splash-screen">
+            <img id="space-invader-logo"src="image/spaceinvaderlogo.png" alt="logo">
+            <h1> SPACE INVADER - no rights reserved </h1>
+         
+            </section>
+            <footer>
+               <p>PRESS ANY KEY TO START GAME </p>
+            </footer>           
 
-       const StartButton=document.querySelector('button');
-       StartButton.addEventListener('click',buildGameScreen);
+        `);
 
+        const StartButton=document.querySelector('button');
+        StartButton.addEventListener('click',buildGameScreen);
     };
 
-      const buildGameScreen =()=>{
+    const buildGameScreen=()=>{
         const gameScreen = buildDom(`
           <section class="game-screen">
               <canvas></canvas>
           </section>
         `);
-        const width=document.querySelector('.game-screen').offsetWidth;
-        const height=document.querySelector('.game-screen').offsetHeight;
+        const width = document.querySelector('.game-screen').offsetWidth;
+        const height= document.querySelector('.game-screen').offsetHeight;
 
         const canvasElement = document.querySelector('canvas');
 
         canvasElement.setAttribute('width',width);
-        canvasElement.setAttribute('height',height);
+        canvasElement.setAttribute('height', height);
 
-        
-
-        //setTimeout(buildGameOver, 3000);
+        setTimeout(buildGameOver, 10000);
         const game = new Game(canvasElement);
         game.gameOverCallback (buildGameOver);
         
         game.startLoop();
 
+        /*
         const setPlayerDirection  = (event) => {
             if ( event.code === 'ArrowUp') {
                 game.player.setDirection(-1);
@@ -53,21 +53,9 @@ const main=() => {
             }
         };
         document.addEventListener('keydown',setPlayerDirection);
-    };
-
-    const buildGameOver = () => {
-        const gameOverScreen9v = buildDom (`
-        <section class="game-over">
-        <h1<Game Over Screen </h1>
-        <button>Restart</button>
-        </section>
-        `);
-
-        const restartButton = document.querySelector('button');
-        restartButton.addEventListener('click', buildGameScreen);
+        */
     }
-    buildSplashScreen();
-*/
+
 }
 
 
