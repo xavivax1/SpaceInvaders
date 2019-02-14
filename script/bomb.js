@@ -1,5 +1,5 @@
 'use strict';
 
-class bomb extends movingThing{
+class Bomb extends MovingThing{
    
 }

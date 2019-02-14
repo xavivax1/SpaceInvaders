@@ -1,5 +1,8 @@
 'use strict';
 
-class movingThing{
+class MovingThing{
+    constructor(){
+        
+    }
    
 }

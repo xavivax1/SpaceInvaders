@@ -1,5 +1,5 @@
 'use strict';
 
-class invader extends movingThing{ 
+class Invader extends MovingThing{ 
    
 }
