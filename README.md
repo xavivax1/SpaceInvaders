@@ -25,7 +25,8 @@ Juego implementado dentro de un flujo de 3 pantallas:
 
 Definición del MVP.
 - Diseño de las tres pantallas. 
-- Generacion de las clases
+- Generacion de las clases Game, Defender, Invader, Bomb & movingThing (esta clase servira de base tanto para 
+	Defender, Invader, bomb).
 
 ## Backlog
 - Clase Shelter : 
@@ -33,15 +34,8 @@ Definición del MVP.
 	* métodos: onshell(): debe decidir como encajar el impacto del proyectil y modificar
 			      el aspecto.
 
-- Clase movingThing{
-       propiedades: sprite[], positionx, positiony,;
-       draw(): 
-       
-  }
-  Esta clase servira de base tanto para Defender, Invader, bomb 
-
 - ArrayofEnemies: Implementar un array 2x2 para ubicar los 55 enemigos en 5 filas de 11.
-
+- Implementar flyingSaucer()
 - Sprites, sonidos, ...
                   
 
