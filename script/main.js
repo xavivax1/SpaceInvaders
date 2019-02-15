@@ -5,28 +5,51 @@ const main=() => {
         const main = document.querySelector('main');
         main.innerHTML= html;
     };
-   
+    
+    
     const buildSplashScreen =() =>{
         const splashScreen =  buildDom(`
-            <section class="splash-screen">
-            <img id="space-invader-logo"src="image/spaceinvaderlogo.png" alt="logo">
-            <h1> SPACE INVADER - no rights reserved </h1>
-         
-            </section>
-            <footer>
-               <p>PRESS ANY KEY TO START GAME </p>
-            </footer>           
-
+        <section class="splash-screen">
+        <img id='space-invader-logo' src='images/spaceinvaderlogo.png' alt="logo">
+        <h1> SPACE INVADER - no rights reserved </h1>
+        <p>PRESS ANY KEY TO START GAME </p>
+        <button>Start</button>
+        </section>
         `);
 
+        // Listener inicio de juego
         const StartButton=document.querySelector('button');
         StartButton.addEventListener('click',buildGameScreen);
     };
+    
 
+    // callback() de inicio de juego
     const buildGameScreen=()=>{
         const gameScreen = buildDom(`
+          <section class="header">
+          <div>
+          <p>SCORE(1)</p>
+          <p>0000</p>
+          </div>
+          <div>
+          <p>HI-SCORE</p>
+          <p>0000</p>
+          </div>
+          <div>
+          <p>SCORE(2)</p>
+          <p>0000</p>
+          </div>
+          </section>
           <section class="game-screen">
               <canvas></canvas>
+          </section>
+          <section class="footer">
+          <div>
+          <p>3</p>
+          </div>
+          <div>
+          <p>CREDIT 00</p>
+          </div>
           </section>
         `);
         const width = document.querySelector('.game-screen').offsetWidth;
@@ -37,26 +60,59 @@ const main=() => {
         canvasElement.setAttribute('width',width);
         canvasElement.setAttribute('height', height);
 
-        setTimeout(buildGameOver, 10000);
+       // setTimeout(buildGameOver, 10000);
         const game = new Game(canvasElement);
         game.gameOverCallback (buildGameOver);
         
         game.startLoop();
-
-        /*
-        const setPlayerDirection  = (event) => {
-            if ( event.code === 'ArrowUp') {
-                game.player.setDirection(-1);
-
-            }else if (event.code==='ArrowDown'){
-                game.player.setDirection(1);
+        
+        const setDefenderDirection  = (event) => {
+            debugger;
+            if ( event.code === 'ArrowLeft') {
+                game.defender.setDirection(-1);
+            }else if (event.code==='ArrowRight'){
+                game.defender.setDirection(1);
+            }else if (event.code==='Space') {            //canvas, direction,x,y
+                game.bombs.push(game.defender.shot());
             }
         };
-        document.addEventListener('keydown',setPlayerDirection);
-        */
+        document.addEventListener('keydown',setDefenderDirection);
+        
+       
+        const setDefenderStop  = (event) => {
+            game.defender.setDirection(0);
+        };
+        document.addEventListener('keyup',setDefenderStop);
+        
+        
+        
+      
     }
+    //------------------------------------
+    const buildGameOver =()=>{
+        
+        const gameScreen = buildDom(`
+          <section class="gameover">
+          <div>
+          <h1>Game Over </h1>
+          <h2>HALL OF FAME</h2>
+          <h2>------------</h2>
+          <h3> player 1 .....  1200 pts</h3>
+          <h3> player 2 .....  1200 pts</h3>
+          </div>
 
+          <div id=bottom>
+            <p>PRESS ANY KEY TO RESTART (o place a coin in the SD slot)</p>
+            <button>Restart</button>
+          </div>
+          </section>  
+          
+        `);
+        const restartButton = document.querySelector('button');
+        restartButton.addEventListener('click', buildGameScreen);
+    
+    };
+
+    buildSplashScreen();
 }
-
-
 window.addEventListener('load',main);
