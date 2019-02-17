@@ -12,7 +12,7 @@ class Bomb {
         this.delete=false
     }
     checkBoundaries(y){
-        if (y > this.canvas.height) 
+        if (y < 0) 
            return false;
         else 
             return true;   
@@ -26,13 +26,8 @@ class Bomb {
 
     draw(){
         this.ctx.fillStyle = this.color;
-        /*
-        this.ctx.fillRect(this.x, this.y,
-                          this.x+2, this.y-4);
-                       */
         this.ctx.beginPath();                 
         this.ctx.arc(this.x,this.y-4,3,0, 2*Math.PI);  
-        this.ctx.fillStyle = "yellow";
         this.ctx.fill();  
         this.ctx.stroke();   
     };

@@ -29,15 +29,15 @@ const main=() => {
           <section class="header">
           <div>
           <p>SCORE(1)</p>
-          <p>0000</p>
+          <p id="score1"><script>game.score</script></p>
           </div>
           <div>
           <p>HI-SCORE</p>
-          <p>0000</p>
+          <p id="highscore"><script>game.score</script></p>
           </div>
           <div>
           <p>SCORE(2)</p>
-          <p>0000</p>
+          <p id="score2"><script>game.score</script></p>
           </div>
           </section>
           <section class="game-screen">
@@ -52,6 +52,7 @@ const main=() => {
           </div>
           </section>
         `);
+        debugger;
         const width = document.querySelector('.game-screen').offsetWidth;
         const height= document.querySelector('.game-screen').offsetHeight;
 
@@ -67,12 +68,11 @@ const main=() => {
         game.startLoop();
         
         const setDefenderDirection  = (event) => {
-            debugger;
             if ( event.code === 'ArrowLeft') {
                 game.defender.setDirection(-1);
             }else if (event.code==='ArrowRight'){
                 game.defender.setDirection(1);
-            }else if (event.code==='Space') {            //canvas, direction,x,y
+            }else if (event.code==='Space') {            
                 game.bombs.push(game.defender.shot());
             }
         };
