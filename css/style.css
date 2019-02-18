@@ -19,6 +19,11 @@ body {
 body {
   color:white;
   background-color: black;
+  
+  background-image: url("../images/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  
   font-family: 'VT323', monospace;
   font-size: 2.5em;
   line-height: 147%;
@@ -117,8 +122,13 @@ p {
   
 }
 .game-screen {
-  width: 100%;
+  width: 100%; /*70vw;*/
   height: 85vh;
- /* border-color: antiquewhite;
-  border: 1px;*/
-}
+  border-style: solid;
+  border-color: white;
+  
+  background-image: url("../images/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}  
+ 

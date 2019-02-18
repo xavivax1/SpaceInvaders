@@ -26,33 +26,32 @@ const main=() => {
     // callback() de inicio de juego
     const buildGameScreen=()=>{
         const gameScreen = buildDom(`
-          <section class="header">
-          <div>
-          <p>SCORE(1)</p>
-          <p id="score1"><script>game.score</script></p>
-          </div>
-          <div>
-          <p>HI-SCORE</p>
-          <p id="highscore"><script>game.score</script></p>
-          </div>
-          <div>
-          <p>SCORE(2)</p>
-          <p id="score2"><script>game.score</script></p>
-          </div>
-          </section>
-          <section class="game-screen">
-              <canvas></canvas>
-          </section>
-          <section class="footer">
-          <div>
-          <p>3</p>
-          </div>
-          <div>
-          <p>CREDIT 00</p>
-          </div>
-          </section>
+            <section class="header">
+                <div>
+                    <p>SCORE(1)</p>
+                    <p id="score1"><script>game.score</script></p>
+                </div>
+                <div>
+                    <p>HI-SCORE</p>
+                    <p id="highscore"><script>game.score</script></p>
+                </div>
+                <div>
+                    <p>SCORE(2)</p>
+                    <p id="score2"><script>game.score</script></p>
+                </div>
+            </section>
+            <section class="game-screen">
+                <canvas></canvas>
+            </section>
+            <section class="footer">
+                <div>
+                    <p>3</p>
+                </div>
+                <div>
+                    <p>CREDIT 00</p>
+                </div>
+            </section>
         `);
-        debugger;
         const width = document.querySelector('.game-screen').offsetWidth;
         const height= document.querySelector('.game-screen').offsetHeight;
 

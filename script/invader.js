@@ -10,40 +10,45 @@ class Invader {
         this.directiony=0;
         this.x=x;
         this.y=y;
-        this.speed_x=5;
-        this.speed_y=2;
+        this.speed_x= 0.4;
+        this.speed_y=3;
         this.width=width;
         this.height=height;
-        this.isDead=false;
+        this.isAlive=true;
+        this.imagePlayer = new Image();
+        this.imagePlayer.src='./SpaceInvaders/images/space-invaders.png';
     }
     setDirection(x,y){
         this.directionx=x;
         this.directiony=y;
     }
+    
     //
-    checkBoundaries(vx, vy){
-
-        if ( (this.x+this.witdh + vx * this.speed_x > this.canvas.height - 80) ||
-             (this.y+this.height + vy * this.speed_y > this.canvas.width) ||
-             (this.x+vy * this.steep_x )< 0 ) {
-            return false;
+   // checkBoundaries(){                 // return false if boundaries reached true otherwise
+    boundariesReached() {
+        if ( ( this.directionx === 1 ) && 
+             (this.x+this.width + this.directionx * this.speed_x > this.canvas.width - 10) ){
+            return true;
         }
-        return true;
+        else if ( ( this.directionx === -1 ) && 
+            (this.x+this.directionx * this.speed_x < 0 ) ){
+            return true;
+        }
+        else if ( ( this.directiony === 1 ) && 
+                (this.y+this.height + this.directiony * this.speed_y + 50 > this.canvas.height ) ){
+            return true;
+        }
+        return false;
     };
 
-/*    update(){
-        if (this.checkBoundaries(this.x,this.y)) {
-            this.y=this.y+this.speed_y*this.direction_Y;
-            this.x=this.x+this.speed_y*this.direction_X;
-        }else this.delete=true;
+    update(){
+        this.y=this.y+this.speed_y*this.directiony;
+        this.x=this.x+this.speed_y*this.directionx;
     };
-*/
 
-    update(x,y){ // patrol informa las nuevas posiones directamente
-        this.x=x;
-        this.y=y; 
-    };
     draw(){
+        //this.ctx.drawImage(this.imagePlayer, this.x, this.y,this.width, this.height);
+       
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(this.x, this.y,this.width, this.height);
     };
@@ -53,7 +58,7 @@ class Invader {
     };
 
     bangBang(){
-        this.isDead=true;
+        this.isAlive=false;
     }
    
 }

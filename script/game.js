@@ -19,7 +19,7 @@ class Game {
     startLoop() {
         
         this.defender=new Defender(this.canvas);
-        this.patrol=new Patrol( this.canvas, 55);
+        this.patrol=new Patrol( this.canvas);
            
         const loop = () => {
     
@@ -38,14 +38,20 @@ class Game {
 
       updateCanvas() {
         this.defender.update();
-        this.patrol.update(this.defender.x, this.defender.y);
+       
+        if (this.patrol.update(this.defender.x, this.defender.y) === false ) {
+             this.isGameOver=true;
+             this.onGameOver();
+        }
+           
 
        /*  bombs    needs to be refactorized */
-        let shells=this.bombs.filter((bomb) => {
-            if (bomb.delete === true)
-               return false;
+        let shells=this.bombs.filter(b => {
+               return (!b.delete);
         });
-        
+        if ( shells.lenght > 0 ) { 
+            console.log('shellss');
+        }
         //this.bombs = shells;
         // falta copiar this.bombs=shells
         this.bombs.forEach((bomb) =>{

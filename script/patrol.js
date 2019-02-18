@@ -1,16 +1,12 @@
 'use strict';
 
 class Patrol { 
-    constructor(canvas, numInvaders ){
+    constructor(canvas ){
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
-        //this.direction;   // clase filla
         this.originx;
         this.originy;
         this.speed=2;
-        //this.delete=false;
-        this.invader=[];
-        this.numInvaders=numInvaders;
         
         this.rows=5;
         this.cols=11;
@@ -18,101 +14,133 @@ class Patrol {
         this.ypad=15;
         this.invaderWidth=40;
         this.invaderHeight=45;
-        this.lastx=0;
-        this.lasty=0;
-        // implementar un set
-        this.directionVector=[ [0,1] ,[1,0] ,[0,-1] ,[-1,0] ] ;  // vectores =['down','right','up','left']
-        this.lastMove=0;
-
-        // setup array
+        this.vDown=[0,1];
+        this.vLeft=[-1,0];
+        this.vRight=[1,0];
+        this.vector=[1,0];    // comencem anant a la dreta
+        this.lastMove='Right';
+        
+        
+        // setup invaders array
         this.invaders=new Array(5);
     
         for (let row=0;row<this.rows;row++){
             this.invaders[row]=new Array(this.cols);
         
             for (let col=0;col<this.cols;col++) {
-                if (numInvaders) {
-                    let def = new Invader(this.canvas,(col+1)*this.xpad+(col)*this.invaderWidth,
-                                            (row+1)*this.ypad+(row)*this.invaderHeight,
-                                            this.invaderWidth, this.invaderHeight,
-                                            this.getColor(row),this.getPoints(row));
-                    this.invaders[row][col]=def;
-                    this.lastx=row;
-                    this.lasty=col;
-                    numInvaders--
-                };
+                let def = new Invader(this.canvas,(col+1)*this.xpad+(col)*this.invaderWidth,
+                                        (row+1)*this.ypad+(row)*this.invaderHeight,
+                                        this.invaderWidth, this.invaderHeight,
+                                        this.getColor(row),this.getPoints(row));
+                def.setDirection(0,1);
+                this.invaders[row][col]=def;
+        
             };  
         };  
-    }
-    update(targetx, targety){
-        // check foe impacts update score and remove corpses by ==> should be done by game?!
-        // find invaders candidate to shot, and randomly do it. ==> shoulb be done by game!
-        this.shot(targetx,targety);
-        // checkPatrolBoundaries and step forward
-        if( this.checkPatrolBoundaries() === false ) {   // canvio de direccion
-            
-        }
-        /*
-        let nova=this.invaders.forEach(element => {
+    };
 
+    setDirection(texto){
+        switch(texto){
+            case 'Left':
+                this.lastMove=texto;
+               this.vector=this.vLeft;
+            break;   
+            case 'Right':
+                this.lastMove=texto;
+                this.vector=this.vRight;
+            break;   
+            case 'Down':
+                this.lastMove=texto;
+                this.vector=this.vDown;
+            break;   
+        }
+    }
+    
+    update(targetx, targety){
+        this.setDirection(this.lastMove);
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                e.setDirection(this.vector[0], this.vector[1]);
+            });
         });
-        */
-        
+        if (this.patrolBoundariesReached() === true ) {                     
+            let prevMove=this.lastMove;
+           if (this.lastMove === 'Left' || this.lastMove === 'Right' ) {            // RIGHT or LEFT
+                this.setDirection('Down');
+               
+               if (this.patrolBoundariesReached() === true ) {
+                  return false;                             // Game Over (landing zone)
+               }   
+               else {
+                    this.invaders.forEach(i => {
+                        i.forEach(e =>{ 
+                            e.setDirection(this.vector[0],this.vector[1]);
+                            e.update();
+                        });
+                    });
+                    if ( prevMove === 'Left' ) {                // start shifting the opposite direction
+                        this.setDirection('Right');
+                    }    
+                    else {
+                        this.setDirection('Left');
+                    }    
+               }   
+           }
+           else 
+                return (false);                          // limit inferior de Y
+           
+        } else {
+            this.invaders.forEach(i => {
+                i.forEach(e =>{ 
+                    e.setDirection(this.vector[0], this.vector[1]);
+                    e.update();
+                });
+            });
+        }
 
     };
 
-    checkPatrolBoundaries(){
-        let firstRow=this.invaders[0];
+    patrolBoundariesReached() {
+       // let vector= this.directionVector[this.lastMove];
         let lastRow=this.invaders[4];
-        let downRightInvader=lastRow[11];
+        let downRightInvader=lastRow[10];
         let downLeftInvader=lastRow[0];
-        let topRightInvader=firstRow[11];
-        let topLeftInvader=firstRow[0];
 
-        // let' try doing the last movement
-        if ( this.lastMove = 1 ) { // movement dreta 
-            if (downLeftInvader.checkBoundaries( this.directionVector[0],0) === false) {
-                // comprovem si podem baixar 1 posicio baixem 1 i posem lastMove=3;
-                if ( downLeftInvader.checkBoundaries( 0,1) === false ) {
-                    //Game Over
-                    return false;
-                }
-                else {
-                    this.lastMove=3;
-                    return true
-                }
+        if ( this.lastMove === 'Right' ) { // shifting right
+            downRightInvader.setDirection(this.vector[0],this.vector[1]);
+            if (downRightInvader.boundariesReached() === true) {
+                return true;                
             }
             
+        } else if (this.lastMove === 'Left') {   // shifting left
+            downLeftInvader.setDirection(this.vector[0],this.vector[1]);
+            if (downLeftInvader.boundariesReached() === true) {
+                return true;
+            }
+        }else if (this.lastMove === 'Down') {   // shifting down
+            downLeftInvader.setDirection(this.vector[0],this.vector[1]);
+            if (downLeftInvader.boundariesReached()=== true ) {
+                return true;
+            }
         }
-        /*
-        if (this.lastMove === 0 ) {
-            if 
+        return false;
         
-
-        }
-*/
-        
-    }
+    };
 
     shot(playerx, playery){
         //1- select optimum shotters 
         //2- randomly shot to the defender appending shells to the game array
-    }
-    draw(){
-        let nova=this.invaders.forEach(invader => {
-            let nova2=invader.forEach(e =>{ 
-                e.draw();
-            })
-        });
-
     };
-    landing(){
-        // comprova si hi ha invaders a la landing zone, if so ----> Game Over
-
+    draw(){
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                if (e.isAlive === true )
+                    e.draw();
+            });
+        });
     };
 
     speedUp(){   // incrementa velocitat
-        
         this.speed++;
     };
 
