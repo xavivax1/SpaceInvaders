@@ -12,7 +12,9 @@ class Defender {
         this.direction = 0;
         this.lives= 3;
         this.imagePlayer = new Image();
-        this.imagePlayer.src='./images/defender.png'
+        this.imagePlayer.src='./images/defender.png';
+        this.sonido= new Audio();
+        this.sonido.src='./sounds/INVADERSHOT.mp3';
     }
 
     setDirection(a){
@@ -38,6 +40,8 @@ class Defender {
     };
 
     shot(){
+        this.sonido.currentTime =0;
+        this.sonido.play();
         let bomb= new Bomb(this.canvas,-1,this.x+this.width/2, this.y-1);
         return(bomb);
     };

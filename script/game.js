@@ -5,7 +5,6 @@ class Game {
          this.canvas=canvas;
          this.bombs=[];
          this.isGameOver=false;
-         //this.invader=[];
          this.ctx = this.canvas.getContext('2d');
          this.patrol;
          this.defender;
@@ -17,7 +16,7 @@ class Game {
     startLoop() {
         
         this.defender=new Defender(this.canvas);
-        this.patrol=new Patrol( this.canvas);
+        this.patrol=new Patrol( this.canvas, this.bombs);
            
         const loop = () => {
     
@@ -45,6 +44,7 @@ class Game {
         //checkImpacts();
 
        /*  bombs    : eliminar balas perdudes */
+        let k= this.patrol.bombs.filter
         let shells=this.bombs.filter(b => {
                return (!b.delete);
         });
@@ -64,18 +64,21 @@ class Game {
       });
       if ( CheckImpactsOnDefender(this.defender.x, this.defender.y, 
                             this.defender.width, this.defender.height, 
-                            Bombs2Defender) === true) 
+                            Bombs2Defender) === true) {
+          // decrementar vidas --> game Over
+          // si no gameOver flipflop destroyed defender & Crash sound
+      }
 
-      CheckImpactsOnInvaders();                      
+      checkInvadersImpact();                      
 
               
     };
 
 
-    CheckImpactsOnInvaders() {
+    checkInvadersImpact() {
         
     };
-    CheckImpactsAmongBombs(up, down){
+    checkBombsCollision(up, down){
       // fer un filter de les bombes que pugen
       // buscar bombes que cauen coincidint en l' espai.
     };                

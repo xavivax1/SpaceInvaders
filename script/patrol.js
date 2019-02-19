@@ -1,13 +1,12 @@
 'use strict';
 
 class Patrol { 
-    constructor(canvas ){
+    constructor(canvas,bombs){
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
         this.originx;
         this.originy;
         this.speed=2;
-        
         this.rows=5;
         this.cols=11;
         this.xpad=15;
@@ -19,10 +18,12 @@ class Patrol {
         this.vRight=[1,0];
         this.vector=[1,0];    // comencem anant a la dreta
         this.lastMove='Right';
-        
+        this.bombs=bombs;
+
         
         // setup invaders array
         this.invaders=new Array(5);
+        this.aliveInvaders=[];
     
         for (let row=0;row<this.rows;row++){
             this.invaders[row]=new Array(this.cols);
@@ -31,20 +32,10 @@ class Patrol {
                 let def = new Invader(this.canvas,(col+1)*this.xpad+(col)*this.invaderWidth,
                                         (row+1)*this.ypad+(row)*this.invaderHeight,
                                         this.invaderWidth, this.invaderHeight,
-                                        this.getColor(row),this.getPoints(row));
+                                        this.getColor(row),this.getPoints(row),
+                                        row, col);
                 def.setDirection(0,1);
-                /*
-                if (row < 2) 
-                    def.imagePlayer.src='./images/InvaderA.png';
-                if (row ===2 || row === 3) {
-                    def.imagePlayer.ser='/images/InvaderB.png';
-                }   
-                if (row === 4 ){
-                    def.imagePlayer.ser='/images/InvaderC.png'
-                }
                 this.invaders[row][col]=def;
-                */
-        
             };  
         };  
     };
@@ -106,7 +97,8 @@ class Patrol {
                     e.update();
                 });
             });
-        }
+        };
+        this.shot(targetx);
 
     };
 
@@ -136,15 +128,7 @@ class Patrol {
         
     };
 
-    shot(playerx, playery){
-        let AliveInvader=selectAliveInvader();
-        let numShots=0;
-        
-        //1- select optimum shotters 
-
-        //2- randomly shot to the defender appending shells to the game array
-        //let bomb= new Bomb(this.canvas,-1,this.x+this.width/2, this.y-1);
-    };
+    
     draw(){
         this.invaders.forEach(i => {
             i.forEach(e =>{ 
@@ -169,26 +153,105 @@ class Patrol {
         if (row === 3 ) return 30;
         else return 10;
     };
+     
 
     selectAliveInvader(){
-        return(this.invaders.filter( e => e.isAlive() ));
+
+     var tmpaliveInvader=[]   
+             
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                if (e.isAlive == true) {
+                    tmpaliveInvader.push(e);
+                }
+                
+            });
+        });
+        this.aliveInvaders=tmpaliveInvader;
+        
     };  
     
-    findBottomInvader(){
+
+    shot(playerx){
+         //1- select optimum shotters 
+        this.selectAliveInvader();
+
+        let sniperTeam=this.getRangeShotters(this.getNearestColumn(playerx));
+        let shots=0;
+        let sniper;
+        //2- randomly shot to the defender appending shells to the game array
+        if (sniperTeam.length <= 10 )
+           shots = 2;
+        else shots = 4;
+
+        for (let n=0; n<shots; n++){
+            sniper = Math.floor(Math.random()* sniperTeam.length);
+            let e=sniperTeam[sniper];
+            this.bombs.push( new Bomb(this.canvas,1,e.x+e.width/2, e.y + 1));
+        }
+        
+        
+    };
+    /* ---------------------------------------------------------------
+        getNearestColumn(x):
+
+        Returns the nearest column to the x position on this.invaders
+        bidimensional array.
+    ----------------------------------------------------------------*/
+    getNearestColumn(x){
+        //let alive=this.selectAliveInvader();
+        let column=99;
+        let minim=99;
+        this.aliveInvaders.forEach(e =>{
+            let result= Math.min(  Math.abs(x-e.x),  Math.abs(e.x+e.width -x ));
+            if (result < minim ) {
+                minim = result;
+                column = e.col;
+            }
+        });
+        return column;
+    };
+ /* ---------------------------------------------------------------
+    getRangeShotters(col):
+    receives the col nearest to de actual defender position.
+    returns an array containing this column invaders and the invaders of 
+    the two nearest columns.
+    ----------------------------------------------------------------- */
+    getRangeShotters(col){                  
+        
+        //let aliveInvaders=this.selectAliveInvader();
+        let rangeShotters=this.aliveInvaders.filter( e => {
+            if ( Math.abs(e.col - col) <= 1 ) 
+               return true;
+        }); 
+        return rangeShotters;          
+
+    };
+    /* ---------------------------------------------------------------
+    findPatrolBottom():
+         return the bottom position of the patrol
+    ----------------------------------------------------------------- */
+
+    findPatrolBottom(){
+    let alive=this.selectAliveInvader();   
     let bottomy=0;
-        this.invaders.forEach(i => {
+
+        alive.forEach(i => {
             i.forEach(e =>{ 
                 if (e.y > bottomy)
                    bottomy=e.y;
             });
         });
         return bottomy;
-
     };
-
-    findRightInvader(){
-        let Right=0;
-        this.invaders.forEach(i => {
+ /* ---------------------------------------------------------------
+    findPatrolRight():
+         returns the most right position of the patrol
+    ----------------------------------------------------------------- */
+    findPatrolRight(){
+    let alive=this.selectAliveInvader();       
+    let Right=0;
+        alive.forEach(i => {
             i.forEach(e =>{ 
                 if (e.x+width > Right)
                 Right=e.x+width;
@@ -196,16 +259,20 @@ class Patrol {
         });
         return Right;
     };
-
-    findLeftInvader(){
-        let Left=300;
-        this.invaders.forEach(i => {
+ /* ---------------------------------------------------------------
+    findPatrolLeft():
+         return the most left position of the patrol
+    ----------------------------------------------------------------- */
+    findPatrolLeft(){
+    let alive=this.selectAliveInvader();    
+    let Left=300;
+        alive.forEach(i => {
             i.forEach(e =>{ 
                 if (e.x< Left)
                 Left=e.x;
             });
         });
-        return Right;
+        return Left;
     };
 
 };    
