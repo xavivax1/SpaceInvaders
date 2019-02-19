@@ -1,7 +1,7 @@
 'use strict';
 
 class Patrol { 
-    constructor(canvas,bombs){
+    constructor(canvas){
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
         this.originx;
@@ -18,7 +18,11 @@ class Patrol {
         this.vRight=[1,0];
         this.vector=[1,0];    // comencem anant a la dreta
         this.lastMove='Right';
-        this.bombs=bombs;
+        this.pbombs=[];
+        this.alienshot= new Audio();
+        this.alienshot.src='./sounds/ALLYSHOT.mp3';
+        this.patrolsound=new Audio();
+        this.patrolsound.src='./sounds/SOUND1.mp3'
 
         
         // setup invaders array
@@ -64,7 +68,8 @@ class Patrol {
                 e.setDirection(this.vector[0], this.vector[1]);
             });
         });
-        if (this.patrolBoundariesReached() === true ) {                     
+        if (this.patrolBoundariesReached() === true ) { 
+            this.soundPatrol();                    
             let prevMove=this.lastMove;
            if (this.lastMove === 'Left' || this.lastMove === 'Right' ) {            // RIGHT or LEFT
                 this.setDirection('Down');
@@ -128,7 +133,10 @@ class Patrol {
         
     };
 
-    
+    soundPatrol(){
+        this.patrolsound.currentTime =0;
+        this.patrolsound.play();
+    }
     draw(){
         this.invaders.forEach(i => {
             i.forEach(e =>{ 
@@ -154,7 +162,11 @@ class Patrol {
         else return 10;
     };
      
+   /* ---------------------------------------------------------------
+        selectAliveInvader():
 
+        Returns an unidimiensional array with the aliveInvaders.
+    ----------------------------------------------------------------*/
     selectAliveInvader(){
 
      var tmpaliveInvader=[]   
@@ -171,8 +183,16 @@ class Patrol {
         
     };  
     
+   /* ---------------------------------------------------------------
+        shot(x):
 
+        Randomly shots to the defender by aiming its position.
+    ----------------------------------------------------------------*/
     shot(playerx){
+        // 0- salir 9 de cada 10 veces
+        let quit=Math.floor(Math.random()*2700);
+        if ( quit > 25 )
+           return;
          //1- select optimum shotters 
         this.selectAliveInvader();
 
@@ -187,8 +207,10 @@ class Patrol {
         for (let n=0; n<shots; n++){
             sniper = Math.floor(Math.random()* sniperTeam.length);
             let e=sniperTeam[sniper];
-            this.bombs.push( new Bomb(this.canvas,1,e.x+e.width/2, e.y + 1));
-        }
+            this.pbombs.push( new Bomb(this.canvas,1,e.x+e.width/2, e.y + 1));
+            this.alienshot.currentTime =0;
+            this.alienshot.play();
+        };
         
         
     };
@@ -219,7 +241,6 @@ class Patrol {
     ----------------------------------------------------------------- */
     getRangeShotters(col){                  
         
-        //let aliveInvaders=this.selectAliveInvader();
         let rangeShotters=this.aliveInvaders.filter( e => {
             if ( Math.abs(e.col - col) <= 1 ) 
                return true;
@@ -227,6 +248,24 @@ class Patrol {
         return rangeShotters;          
 
     };
+
+    /* ---------------------------------------------------------------
+    findPatrolTop():
+         return the bottom position of the patrol
+    ----------------------------------------------------------------- */
+
+    findPatrolTop(){
+        let alive=this.selectAliveInvader();   
+        let topy=this.canvas.height;
+    
+            alive.forEach(i => {
+                i.forEach(e =>{ 
+                    if (e.y < topy)
+                       topy=e.y;
+                });
+            });
+            return topy;
+        };
     /* ---------------------------------------------------------------
     findPatrolBottom():
          return the bottom position of the patrol

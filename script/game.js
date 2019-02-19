@@ -10,6 +10,8 @@ class Game {
          this.defender;
          this.score=110;
          this.lives=3;
+         this.defendercrash= new Audio();
+         this.defendercrash.src='./sounds/ALLYDEATH.mp3';
     };
 
 
@@ -42,13 +44,23 @@ class Game {
         }
         // CheckColisions
         //checkImpacts();
+        this.checkImpacts();
 
        /*  bombs    : eliminar balas perdudes */
-        let k= this.patrol.bombs.filter
+        
+        let pshells=this.patrol.pbombs.filter(p => {
+              return(!p.delete);
+        });
+        this.patrol.pbombs=pshells;
+
         let shells=this.bombs.filter(b => {
                return (!b.delete);
         });
         this.bombs = shells;
+        // update patrol bombs
+        this.patrol.pbombs.forEach(pb=>{
+            pb.update();
+        });
         // update bombs()
         this.bombs.forEach((bomb) =>{
             bomb.update();
@@ -57,25 +69,29 @@ class Game {
         
     };
     
-    CheckImpacts(){
-      let Bombs2Defender=this.bombs.filter(e => {
-           if ( e.delete === false && e.direction === 1 ) 
+    checkImpacts(){
+      let Bombs2Defender=this.patrol.pbombs.filter(e => {
+           if ( e.delete === false ) 
               return (true);
       });
-      if ( CheckImpactsOnDefender(this.defender.x, this.defender.y, 
+      this.checkImpactsOnDefender(this.defender.x, this.defender.y, 
                             this.defender.width, this.defender.height, 
-                            Bombs2Defender) === true) {
+                            Bombs2Defender);
           // decrementar vidas --> game Over
+           
           // si no gameOver flipflop destroyed defender & Crash sound
-      }
+      
 
-      checkInvadersImpact();                      
+      this.checkInvadersImpact();                      
 
               
     };
 
 
     checkInvadersImpact() {
+      let Bombs2Patrol=this.bombs.filter(b=>{
+              if (b.delete === false)
+      });
         
     };
     checkBombsCollision(up, down){
@@ -83,15 +99,19 @@ class Game {
       // buscar bombes que cauen coincidint en l' espai.
     };                
      
-    CheckImpactsOnDefender(x,y,width,height, bombs ){
+    checkImpactsOnDefender(x,y,width,height, bombs ){
           
         bombs.forEach(e => {
            if( (e.x <= x+width && e.x >= x) &&
               (e.y >= y && e.y <= y+height) ) {             // Defender destroyed 
-                this.lives--;
-           }
+                this.defendercrash.currentTime =0;
+                this.defendercrash.play();
+                if ( this.lives > 0 )
+                  this.lives--;
+                else this.GameOver=true; 
+               }
         });
-    }
+    };
 
       clearCanvas() {
         this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
@@ -100,6 +120,9 @@ class Game {
       drawCanvas() {
         this.defender.draw();
 
+        this.patrol.pbombs.forEach( pb=>{
+          pb.draw();
+        });
         this.bombs.forEach((bomb) => {
            bomb.draw();
         });

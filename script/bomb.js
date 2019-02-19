@@ -4,7 +4,10 @@ class Bomb {
     constructor(canvas, direction,x,y){
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d');
-        this.color='orange';
+        if (direction < 0)
+            this.color='orange';
+        else 
+            this.color='green';
         this.direction=direction;   // clase filla
         this.x=x;
         this.y=y;
@@ -32,7 +35,7 @@ class Bomb {
         if (this.direction === -1) {
             this.ctx.arc(this.x,this.y-4,6,0, 2*Math.PI);  
         } else {
-            this.ctx.arc(this.x,this.y-4,3,0, 2*Math.PI);  
+            this.ctx.arc(this.x,this.y-4,4,0, 2*Math.PI);  
         }
         this.ctx.fill();  
         this.ctx.stroke();   
