@@ -10,11 +10,9 @@ class Game {
          this.patrol;
          this.defender;
          this.score=110;
+         this.lives=3;
     };
 
-    bornEnemies(){
-        // create the enemy patrol
-    };
 
     startLoop() {
         
@@ -43,24 +41,55 @@ class Game {
              this.isGameOver=true;
              this.onGameOver();
         }
-           
+        // CheckColisions
+        //checkImpacts();
 
-       /*  bombs    needs to be refactorized */
+       /*  bombs    : eliminar balas perdudes */
         let shells=this.bombs.filter(b => {
                return (!b.delete);
         });
-        if ( shells.lenght > 0 ) { 
-            console.log('shellss');
-        }
-        //this.bombs = shells;
-        // falta copiar this.bombs=shells
+        this.bombs = shells;
+        // update bombs()
         this.bombs.forEach((bomb) =>{
             bomb.update();
         });
         //
         
-    }
+    };
     
+    CheckImpacts(){
+      let Bombs2Defender=this.bombs.filter(e => {
+           if ( e.delete === false && e.direction === 1 ) 
+              return (true);
+      });
+      if ( CheckImpactsOnDefender(this.defender.x, this.defender.y, 
+                            this.defender.width, this.defender.height, 
+                            Bombs2Defender) === true) 
+
+      CheckImpactsOnInvaders();                      
+
+              
+    };
+
+
+    CheckImpactsOnInvaders() {
+        
+    };
+    CheckImpactsAmongBombs(up, down){
+      // fer un filter de les bombes que pugen
+      // buscar bombes que cauen coincidint en l' espai.
+    };                
+     
+    CheckImpactsOnDefender(x,y,width,height, bombs ){
+          
+        bombs.forEach(e => {
+           if( (e.x <= x+width && e.x >= x) &&
+              (e.y >= y && e.y <= y+height) ) {             // Defender destroyed 
+                this.lives--;
+           }
+        });
+    }
+
       clearCanvas() {
         this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
       };

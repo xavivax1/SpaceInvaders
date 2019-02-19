@@ -127,8 +127,17 @@ p {
   border-style: solid;
   border-color: white;
   
-  background-image: url("../images/bg.png");
+ background-image: url("../images/bg.png");
   background-repeat: no-repeat;
   background-size: cover;
+  
 }  
  
+.background {
+  background-image: url("../images/bg-movingstars.gif");
+  background-size: cover;
+}
+.gameover{
+  background-image: url("bg-movingstars.gif");
+  background-size: cover;
+}

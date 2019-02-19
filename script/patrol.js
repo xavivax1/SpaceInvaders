@@ -33,7 +33,17 @@ class Patrol {
                                         this.invaderWidth, this.invaderHeight,
                                         this.getColor(row),this.getPoints(row));
                 def.setDirection(0,1);
+                /*
+                if (row < 2) 
+                    def.imagePlayer.src='./images/InvaderA.png';
+                if (row ===2 || row === 3) {
+                    def.imagePlayer.ser='/images/InvaderB.png';
+                }   
+                if (row === 4 ){
+                    def.imagePlayer.ser='/images/InvaderC.png'
+                }
                 this.invaders[row][col]=def;
+                */
         
             };  
         };  
@@ -101,7 +111,6 @@ class Patrol {
     };
 
     patrolBoundariesReached() {
-       // let vector= this.directionVector[this.lastMove];
         let lastRow=this.invaders[4];
         let downRightInvader=lastRow[10];
         let downLeftInvader=lastRow[0];
@@ -128,8 +137,13 @@ class Patrol {
     };
 
     shot(playerx, playery){
+        let AliveInvader=selectAliveInvader();
+        let numShots=0;
+        
         //1- select optimum shotters 
+
         //2- randomly shot to the defender appending shells to the game array
+        //let bomb= new Bomb(this.canvas,-1,this.x+this.width/2, this.y-1);
     };
     draw(){
         this.invaders.forEach(i => {
@@ -155,4 +169,43 @@ class Patrol {
         if (row === 3 ) return 30;
         else return 10;
     };
+
+    selectAliveInvader(){
+        return(this.invaders.filter( e => e.isAlive() ));
+    };  
+    
+    findBottomInvader(){
+    let bottomy=0;
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                if (e.y > bottomy)
+                   bottomy=e.y;
+            });
+        });
+        return bottomy;
+
+    };
+
+    findRightInvader(){
+        let Right=0;
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                if (e.x+width > Right)
+                Right=e.x+width;
+            });
+        });
+        return Right;
+    };
+
+    findLeftInvader(){
+        let Left=300;
+        this.invaders.forEach(i => {
+            i.forEach(e =>{ 
+                if (e.x< Left)
+                Left=e.x;
+            });
+        });
+        return Right;
+    };
+
 };    

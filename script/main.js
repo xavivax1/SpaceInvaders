@@ -26,6 +26,7 @@ const main=() => {
     // callback() de inicio de juego
     const buildGameScreen=()=>{
         const gameScreen = buildDom(`
+            <section class="background">
             <section class="header">
                 <div>
                     <p>SCORE(1)</p>
@@ -50,6 +51,7 @@ const main=() => {
                 <div>
                     <p>CREDIT 00</p>
                 </div>
+            </section>
             </section>
         `);
         const width = document.querySelector('.game-screen').offsetWidth;
@@ -93,7 +95,7 @@ const main=() => {
         const gameScreen = buildDom(`
           <section class="gameover">
           <div>
-          <h1>Game Over </h1>
+          <h1>GAME OVER </h1>
           <h2>HALL OF FAME</h2>
           <h2>------------</h2>
           <h3> player 1 .....  1200 pts</h3>
@@ -101,7 +103,7 @@ const main=() => {
           </div>
 
           <div id=bottom>
-            <p>PRESS ANY KEY TO RESTART (o place a coin in the SD slot)</p>
+            <p>PRESS ANY KEY TO RESTART</p>
             <button>Restart</button>
           </div>
           </section>  

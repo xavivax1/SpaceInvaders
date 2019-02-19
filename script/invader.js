@@ -16,12 +16,12 @@ class Invader {
         this.height=height;
         this.isAlive=true;
         this.imagePlayer = new Image();
-        this.imagePlayer.src='./SpaceInvaders/images/space-invaders.png';
+        this.imagePlayer.src='./images/InvaderB.png';
     }
     setDirection(x,y){
         this.directionx=x;
         this.directiony=y;
-    }
+    };
     
     //
    // checkBoundaries(){                 // return false if boundaries reached true otherwise
@@ -47,10 +47,10 @@ class Invader {
     };
 
     draw(){
-        //this.ctx.drawImage(this.imagePlayer, this.x, this.y,this.width, this.height);
-       
+        //this.ctx.color=this.color;
         this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.x, this.y,this.width, this.height);
+        this.ctx.drawImage(this.imagePlayer, this.x, this.y,this.width, this.height);
+ //       this.ctx.fillRect(this.x, this.y,this.width, this.height);
     };
 
     getPoints(){

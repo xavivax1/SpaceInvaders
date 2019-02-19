@@ -12,7 +12,7 @@ class Defender {
         this.direction = 0;
         this.lives= 3;
         this.imagePlayer = new Image();
-        this.imagePlayer.src='../images/space-invaders.png'
+        this.imagePlayer.src='./images/defender.png'
     }
 
     setDirection(a){
@@ -31,11 +31,9 @@ class Defender {
     };
 
     draw(){
-        //this.ctx.drawImage(this.imagePlayer, this.x, this.y,this.width, this.height);
-    
-        
         this.ctx.fillStyle = 'purple';
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.ctx.drawImage(this.imagePlayer, this.x, this.y,this.width, this.height);
+     //  this.ctx.fillRect(this.x, this.y, this.width, this.height);
         
     };
 
