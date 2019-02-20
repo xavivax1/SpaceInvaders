@@ -246,7 +246,7 @@ class Patrol {
         let inv;
         
         for (let n=4; n>=0;n--){
-            for (let col=0; col <10; col++) {
+            for (let col=0; col <=10; col++) {
                 inv= this.invaders[n][col];
                 if ( (bomb.x >= inv.x) && 
                     (bomb.x <= inv.x+inv.width) &&

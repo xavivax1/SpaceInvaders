@@ -23,6 +23,7 @@ class Game {
         const loop = () => {
     
           this.updateCanvas();
+          this.checkImpacts();
           this.clearCanvas();
           this.drawCanvas();
 
@@ -42,10 +43,6 @@ class Game {
              this.isGameOver=true;
              this.onGameOver();
         }
-        // CheckColisions
-        //checkImpacts();
-        this.checkImpacts();
-
        /*  bombs    : eliminar balas perdudes */
         
         let pshells=this.patrol.pbombs.filter(p => {
@@ -70,18 +67,16 @@ class Game {
     };
     
     checkImpacts(){
-      let Bombs2Defender=this.patrol.pbombs.filter(e => {
-           if ( e.delete === false ) 
-              return (true);
+      let Bombs2Defender=this.patrol.pbombs.filter(bomb => {
+           if ( bomb.delete === false ) 
+              return true;
       });
-      if (Bombs2Defender.length===0)
-         return;
-      this.checkImpactsOnDefender(this.defender.x, this.defender.y, 
-                            this.defender.width, this.defender.height, 
-                            Bombs2Defender);
-      this.checkInvadersImpact();                      
-
-              
+      if (Bombs2Defender.length > 0) {
+        this.checkImpactsOnDefender(this.defender.x, this.defender.y, 
+          this.defender.width, this.defender.height, 
+          Bombs2Defender);
+      }
+      this.checkInvadersImpact();                              
     };
 
 
@@ -122,15 +117,14 @@ class Game {
 
     checkInvadersImpact() {
       let invader;
-        this.bombs.forEach(b=>{
-          if ( b.delete === false ) {
-              if ( invader=this.patrol.getTargetedInvader(b)  ) {
-                b.delete=true;                
+        this.bombs.forEach(bomb=>{
+          invader = this.patrol.getTargetedInvader(bomb)
+              if (invader) {
+                bomb.delete=true;                
                 this.score+=invader.score;    
                 invader.bangBang();           
               };  
-          };
-    });
+      });
     };
 
     checkBombsCollision(up, down){
