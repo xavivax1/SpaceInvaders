@@ -173,7 +173,7 @@ class Patrol {
              
         this.invaders.forEach(i => {
             i.forEach(e =>{ 
-                if (e.isAlive == true) {
+                if (e.isAlive === true) {
                     tmpaliveInvader.push(e);
                 }
                 
@@ -197,6 +197,10 @@ class Patrol {
         this.selectAliveInvader();
 
         let sniperTeam=this.getRangeShotters(this.getNearestColumn(playerx));
+        if ( sniperTeam.length === 0 ) {
+            console.log('no rangeShotters!')
+           return ;
+        }   
         let shots=0;
         let sniper;
         //2- randomly shot to the defender appending shells to the game array
@@ -233,6 +237,47 @@ class Patrol {
         });
         return column;
     };
+
+    /* ---------------------------------------------------------------
+    getTargetedInvader(col,bomb):
+     
+    ----------------------------------------------------------------- */
+    getTargetedInvader(bomb){
+        let inv;
+        
+        for (let n=4; n>=0;n--){
+            for (let col=0; col <10; col++) {
+                inv= this.invaders[n][col];
+                if ( (bomb.x >= inv.x) && 
+                    (bomb.x <= inv.x+inv.width) &&
+                    (bomb.y >= inv.y) && 
+                    (bomb.y <= inv.y+inv.height) &&
+                    inv.isAlive === true ) {
+                    return inv;
+                }; 
+            };     
+        };
+    };
+
+    /* ---------------------------------------------------------------
+    getInvadersByCol(x) 
+    receives the x position and returns the invaders column number 
+    ----------------------------------------------------------------- */
+    getInvadersByCol(x,width) {
+        let left=x-width;
+        let right=x+width;
+        let fila=this.invaders.forEach(r =>{
+            r.forEach(c =>{
+                if ( (left >= c.x) && (left <= c.x+c.width) ||
+                     (right >= c.x) && (right <= c.x+c.width) ) {
+                        return c.col;
+                     };
+
+            });
+
+        });
+
+    };
  /* ---------------------------------------------------------------
     getRangeShotters(col):
     receives the col nearest to de actual defender position.
@@ -255,10 +300,10 @@ class Patrol {
     ----------------------------------------------------------------- */
 
     findPatrolTop(){
-        let alive=this.selectAliveInvader();   
         let topy=this.canvas.height;
-    
-            alive.forEach(i => {
+        let alive =[];
+            alive=this.selectAliveInvader();
+         alive.forEach(i => {
                 i.forEach(e =>{ 
                     if (e.y < topy)
                        topy=e.y;
@@ -272,10 +317,10 @@ class Patrol {
     ----------------------------------------------------------------- */
 
     findPatrolBottom(){
-    let alive=this.selectAliveInvader();   
+    let alive=[];
     let bottomy=0;
-
-        alive.forEach(i => {
+        
+        this.selectAliveInvader().forEach(i => {
             i.forEach(e =>{ 
                 if (e.y > bottomy)
                    bottomy=e.y;
@@ -290,7 +335,9 @@ class Patrol {
     findPatrolRight(){
     let alive=this.selectAliveInvader();       
     let Right=0;
-        alive.forEach(i => {
+
+   // if (Array.isArray(alive )) {
+           alive.forEach(i => {
             i.forEach(e =>{ 
                 if (e.x+width > Right)
                 Right=e.x+width;
@@ -303,9 +350,10 @@ class Patrol {
          return the most left position of the patrol
     ----------------------------------------------------------------- */
     findPatrolLeft(){
-    let alive=this.selectAliveInvader();    
+    //let alive=this.selectAliveInvader();    
+
     let Left=300;
-        alive.forEach(i => {
+    this.selectAliveInvader().forEach(i => {
             i.forEach(e =>{ 
                 if (e.x< Left)
                 Left=e.x;

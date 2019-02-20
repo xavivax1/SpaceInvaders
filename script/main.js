@@ -11,7 +11,7 @@ const main=() => {
         const splashScreen =  buildDom(`
         <section class="splash-screen">
         <img id='space-invader-logo' src='images/spaceinvaderlogo.png' alt="logo">
-        <h1> SPACE INVADER - no rights reserved </h1>
+        <h1>SPACE INVADER</h1>
         <p>PRESS ANY KEY TO START GAME </p>
         <button>Start</button>
         </section>
@@ -30,15 +30,15 @@ const main=() => {
             <section class="header">
                 <div>
                     <p>SCORE(1)</p>
-                    <p id="score1"><script>game.score</script></p>
+                    <p id="score1"></p>
                 </div>
                 <div>
                     <p>HI-SCORE</p>
-                    <p id="highscore"><script>game.score</script></p>
+                    <p id="highscore"></p>
                 </div>
                 <div>
                     <p>SCORE(2)</p>
-                    <p id="score2"><script>game.score</script></p>
+                    <p id="score2"></p>
                 </div>
             </section>
             <section class="game-screen">
@@ -46,7 +46,7 @@ const main=() => {
             </section>
             <section class="footer">
                 <div>
-                    <p>3</p>
+                    <p id="lives"></p>
                 </div>
                 <div>
                     <p>CREDIT 00</p>
@@ -65,6 +65,13 @@ const main=() => {
        // setTimeout(buildGameOver, 10000);
         const game = new Game(canvasElement);
         game.gameOverCallback (buildGameOver);
+
+        game.gameUpdateScore(() => {
+            const scorePlayerShow = document.getElementById('score1');
+            const playerLivesShow = document.getElementById('player-lives');
+            playerLivesShow.innerHTML = game.player.lives;
+            scorePlayerShow.innerHTML = game.score;
+         });
         
         game.startLoop();
         
@@ -84,9 +91,6 @@ const main=() => {
             game.defender.setDirection(0);
         };
         document.addEventListener('keyup',setDefenderStop);
-        
-        
-        
       
     }
     //------------------------------------
@@ -113,6 +117,7 @@ const main=() => {
         restartButton.addEventListener('click', buildGameScreen);
     
     };
+
 
     buildSplashScreen();
 }

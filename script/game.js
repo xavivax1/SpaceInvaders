@@ -74,26 +74,65 @@ class Game {
            if ( e.delete === false ) 
               return (true);
       });
+      if (Bombs2Defender.length===0)
+         return;
       this.checkImpactsOnDefender(this.defender.x, this.defender.y, 
                             this.defender.width, this.defender.height, 
                             Bombs2Defender);
-          // decrementar vidas --> game Over
-           
-          // si no gameOver flipflop destroyed defender & Crash sound
-      
-
       this.checkInvadersImpact();                      
 
               
     };
 
 
-    checkInvadersImpact() {
+/*
+ checkInvadersImpact() {
       let Bombs2Patrol=this.bombs.filter(b=>{
-              if (b.delete === false)
+              return(! b.delete) ;
       });
+      if ( Bombs2Patrol.length === 0 )
+         return;
+      let patrolTop=this.patrol.findPatrolTop();    
+      let patrolBottom=this.patrol.findPatrolBottom();
+      let patrolLeft=this.patrol.findPatrolLeft();
+      let patrolRight=this.patrol.findPatrolRight();
+      let col;
+      
+        Bombs2Patrol.forEach(b =>{
+          if ( (b.y<= patrolTop && b.y >= patrolBottom) &&
+            (b.x >= patrolLeft && b.x <= patrolRight)  ) {
+                col=getInvadersByCol(b.x, 5);
+                if ( invader=getTargetedInvader(col,bomb)  ) {
+                  b.delete=true;                
+                  this.score+=invader.score;    
+                  invader.bangBang();           
+                }
+          };
+
+        });
+
         
     };
+
+*/
+
+
+
+
+
+    checkInvadersImpact() {
+      let invader;
+        this.bombs.forEach(b=>{
+          if ( b.delete === false ) {
+              if ( invader=this.patrol.getTargetedInvader(b)  ) {
+                b.delete=true;                
+                this.score+=invader.score;    
+                invader.bangBang();           
+              };  
+          };
+    });
+    };
+
     checkBombsCollision(up, down){
       // fer un filter de les bombes que pugen
       // buscar bombes que cauen coincidint en l' espai.
@@ -109,31 +148,33 @@ class Game {
                 if ( this.lives > 0 )
                   this.lives--;
                 else this.GameOver=true; 
+                //flipflop durant 1s
                }
         });
     };
 
-      clearCanvas() {
-        this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
-      };
-    
-      drawCanvas() {
+    clearCanvas() {
+      this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
+    };
+  
+    drawCanvas() {
         this.defender.draw();
 
         this.patrol.pbombs.forEach( pb=>{
           pb.draw();
         });
         this.bombs.forEach((bomb) => {
-           bomb.draw();
+            bomb.draw();
         });
         this.patrol.draw();
-      };
-     gameOverCallback(callback) {
-        this.onGameOver = callback;
     };
 
-
-
-  
+    gameOverCallback(callback) {
+      this.onGameOver = callback;
+    };
+    
+    gameUpdateScore(callback){
+      this.updateScore = callback;
+    };
 
 };
