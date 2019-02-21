@@ -7,12 +7,12 @@ class Bomb {
         if (direction < 0)
             this.color='orange';
         else 
-            this.color='green';
+            this.color='red';
         this.direction=direction;   // clase filla
         this.x=x;
         this.y=y;
         this.speed=5;
-        this.delete=false
+        this.delete=false;
     }
     checkBoundaries(y){
         if ( (y < 0) || (y > this.canvas.height) ){
@@ -35,7 +35,7 @@ class Bomb {
         if (this.direction === -1) {
             this.ctx.arc(this.x,this.y-4,6,0, 2*Math.PI);  
         } else {
-            this.ctx.arc(this.x,this.y-4,4,0, 2*Math.PI);  
+            this.ctx.arc(this.x,this.y-4,6,0, 2*Math.PI);  
         }
         this.ctx.fill();  
         this.ctx.stroke();   

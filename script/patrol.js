@@ -111,6 +111,8 @@ class Patrol {
         let lastRow=this.invaders[4];
         let downRightInvader=lastRow[10];
         let downLeftInvader=lastRow[0];
+        //let downLeftInvader=this.findPatrolBottom
+
 
         if ( this.lastMove === 'Right' ) { // shifting right
             downRightInvader.setDirection(this.vector[0],this.vector[1]);
@@ -191,7 +193,7 @@ class Patrol {
     shot(playerx){
         // 0- salir 9 de cada 10 veces
         let quit=Math.floor(Math.random()*2700);
-        if ( quit > 25 )
+        if ( quit > 10 )
            return;
          //1- select optimum shotters 
         this.selectAliveInvader();
@@ -318,15 +320,15 @@ class Patrol {
 
     findPatrolBottom(){
     let alive=[];
-    let bottomy=0;
+    let bottomInvader;
         
         this.selectAliveInvader().forEach(i => {
             i.forEach(e =>{ 
-                if (e.y > bottomy)
-                   bottomy=e.y;
+                if (e.y > bottomInvader.y)
+                   bottomInvader.y=e.y;
             });
         });
-        return bottomy;
+        return bottomInvader;
     };
  /* ---------------------------------------------------------------
     findPatrolRight():

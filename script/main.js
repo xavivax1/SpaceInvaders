@@ -10,10 +10,18 @@ const main=() => {
     const buildSplashScreen =() =>{
         const splashScreen =  buildDom(`
         <section class="splash-screen">
-        <img id='space-invader-logo' src='images/spaceinvaderlogo.png' alt="logo">
-        <h1>SPACE INVADER</h1>
-        <p>PRESS ANY KEY TO START GAME </p>
-        <button>Start</button>
+        <img id='space-invader-logo' src='./images/spaceinvaderlogo.png' alt="logo">
+        <div id="logos">
+          <img src='./images/InvaderA.png' alt="A">
+          <img src='./images/InvaderB.png' alt="B">
+          <img src='./images/InvaderC.png' alt="C">
+          <img src='./images/InvaderA1.png' alt="A">
+          <img src='./images/InvaderB1.png' alt="B">
+          <img src='./images/InvaderC1.png' alt="C">
+        </div>
+            
+        
+        <button id=boto>START</button>
         </section>
         `);
 
@@ -68,8 +76,8 @@ const main=() => {
 
         game.gameUpdateScore(() => {
             const scorePlayerShow = document.getElementById('score1');
-            const playerLivesShow = document.getElementById('player-lives');
-            playerLivesShow.innerHTML = game.player.lives;
+            const playerLivesShow = document.getElementById('lives');
+            playerLivesShow.innerHTML = game.lives;
             scorePlayerShow.innerHTML = game.score;
          });
         
@@ -98,17 +106,15 @@ const main=() => {
         
         const gameScreen = buildDom(`
           <section class="gameover">
-          <div>
+          <div id="theOnlyDiv">
           <h1>GAME OVER </h1>
-          <h2>HALL OF FAME</h2>
-          <h2>------------</h2>
-          <h3> player 1 .....  1200 pts</h3>
-          <h3> player 2 .....  1200 pts</h3>
-          </div>
-
-          <div id=bottom>
-            <p>PRESS ANY KEY TO RESTART</p>
-            <button>Restart</button>
+          <h3> TXI .....  3200 </h3>
+          <h3> AAA .....  1200 </h3>
+          <h3> FET .....  0820 </h3>
+          <h3> DAD .....  0910 </h3>
+          <h3> MOM .....  0200 </h3>
+                   
+          <button id=boto>Restart</button>
           </div>
           </section>  
           
