@@ -28,13 +28,13 @@ Definición del MVP.
 - Generacion de las clases Game, Defender, Invader, Bomb & Patrol que sera la clase que gobernara el bloque de invaders.
 
 ## Backlog
-- Clase Shelter : 
+- Implement Shelter Class : 
 	* atributos: posicionX, posicionY, size.
 	* métodos: onshell(): debe decidir como encajar el impacto del proyectil y modificar
 			      el aspecto.
 
-- Implementar flyingSaucer()
-- Sprites, sonidos, ...
+- Implement flyingSaucer()
+- Implement bonus system to engage player
                   
 
 
